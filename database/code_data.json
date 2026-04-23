@@ -1,0 +1,29 @@
+{
+    "code_examples_lua": [
+        {
+            "description": "Simple function definition",
+            "code": "function add(a, b)\n  return a + b\nend\nprint(add(5, 3))"
+        },
+        {
+            "description": "Looping with a table",
+            "code": "local fruits = {\"apple\", \"banana\", \"cherry\"}\nfor i, fruit in ipairs(fruits) do\n  print(i .. \": \" .. fruit)\nend"
+        },
+        {
+            "description": "Conditional logic",
+            "code": "local score = 85\nif score >= 90 then\n  print('Grade A')\nelseif score >= 80 then\n  print('Grade B')\nelse\n  print('Grade C')\nend"
+        },
+        {
+            "description": "Table manipulation",
+            "code": "local person = {name = \"Alice\", age = 30}\nperson.city = \"New York\"\nfor key, value in pairs(person) do\n  print(key .. \": \" .. value)\nend"
+        }
+    ],
+    "code_patterns_lua": [
+        "--[[ A comment block in Lua ]]--",
+        "local var_name = value",
+        "function func_name(args) --[[ code ]]-- end",
+        "print(message)",
+        "table_name = {}",
+        "if condition then --[[ code ]]-- end",
+        "for i = 1, N do --[[ code ]]-- end"
+    ]
+}

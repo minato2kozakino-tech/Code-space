@@ -1,0 +1,23 @@
+{
+    "keywords_lua": [
+        "function", "end", "if", "then", "else", "elseif", "while", "do", "for", "in", "local", "return", "nil", "true", "false", "and", "or", "not", "repeat", "until", "break", "goto", "then", "elseif", "else", "end", "for", "in", "do", "while", "do", "repeat", "until", "local", "function", "return", "nil", "true", "false", "and", "or", "not"
+    ],
+    "syntax_patterns_lua": [
+        "local function name() end",
+        "function name() end",
+        "if condition then statements end",
+        "if condition then statements else statements end",
+        "for i = start, end, step do statements end",
+        "for var in iterator do statements end",
+        "while condition do statements end",
+        "repeat statements until condition"
+    ],
+    "common_snippets_lua": [
+        "print('Hello from Lua!')",
+        "local x = 10",
+        "local y = x * 2",
+        "if x > 5 then print('x is greater than 5') end",
+        "for i = 1, 5 do print(i) end",
+        "function greet(name) print('Hello, ' .. name) end"
+    ]
+}

@@ -1,0 +1,60 @@
+project:
+  name: "Origon AI"
+  version: "1.4-multilang-gaton"
+
+paths:
+  model_dir: "models"
+  gaton_model: "models/astropic/astropic-1.ori" # New model path
+  old_model: "none" # Keep for reference or if needed
+  memory_file: "models/memory.json"
+  data_file: "database/combined_data.txt" # New combined data file
+  db_config_en: "database/en_data.json"
+  db_config_vn: "database/vn_data.json"
+  db_config_lua: "database/lua_data.json" # New Lua data file
+  code_data_config: "database/code_data.json" # New Lua code data file
+
+brain:
+  hidden_size: 128 # Increased for more complexity
+  init_std: 0.01
+  use_bias: true
+  use_tfidf: true
+  use_markov: true
+
+trainer:
+  epochs: 150 # Increased epochs for potentially more complex training
+  learning_rate: 0.001 # Adjusted learning rate
+  batch_size: 128
+  n_gram: 10 # Increased n-gram for context
+  gradient_clip_norm: 1.0 # Gradient clipping enabled
+
+chat:
+  max_len: 50
+  temperature: 0.7
+  top_p: 0.85
+  repetition_penalty:
+    base: 60.0
+    incremental: 25.0
+  context_window: 10
+
+data_gen:
+  size_kb: 10000 # Increased data generation size
+  languages: ["en", "vn", "lua"] # Support for multiple languages
+  language_weights: # Optional: To control distribution if needed
+    en: 0.4
+    vn: 0.4
+    lua: 0.2
+
+# New configurations for integrated algorithms
+markov_chain:
+  order: 3
+  smoothing: "add_one" # Example smoothing technique
+
+tfidf:
+  use_in_generation: true
+  boost_factor: 0.1
+
+classifier:
+  model_type: "MultinomialNB" # Or "LogisticRegression"
+  # classifier_params: { See scikit-learn docs for specific params }
+
+
