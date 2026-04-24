@@ -37,7 +37,7 @@ chat:
   context_window: 10
 
 data_gen:
-  size_kb: 10000 # Increased data generation size
+  size_kb: 563829 # Increased data generation size
   languages: ["en", "vn", "lua"] # Support for multiple languages
   language_weights: # Optional: To control distribution if needed
     en: 0.4
