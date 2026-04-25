@@ -1,0 +1,30 @@
+human,bot
+"xin chào","chào bạn! tôi có thể giúp gì cho bạn?"
+"bạn là ai?","tôi là origon ai, một trợ lý ảo."
+"viết hàm python","def add(a, b):
+  return a + b"
+"hãy viết code lua cho một vòng lặp","for i = 1, 10 do
+  print(i)
+end"
+"tell me about machine learning","machine learning is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to "learn" from data."
+"how to use git?","git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. common commands include git clone, git add, git commit, git push."
+"bạn có thể dịch "hello" sang tiếng việt không?","hello có nghĩa là xin chào trong tiếng việt."
+"write a simple python program","print("Hello, World!")"
+"lua function to print a message","function display_msg(msg)
+  print(msg)
+end"
+"what is deep learning?","deep learning is a subset of machine learning in artificial intelligence that has networks capable of learning unsupervised from data that is unstructured or unlabeled."
+"how to train a neural network?","training a neural network involves feeding it data, computing the loss, and then using backpropagation to update the network's weights and biases."
+"giải thích về tensorflow","tensorflow là một thư viện mã nguồn mở được phát triển bởi google dùng để phát triển và huấn luyện các mô hình học máy và học sâu."
+"viết một câu chuyện ngắn","ngày xửa ngày xưa, có một chú mèo con rất thích khám phá thế giới xung quanh. một ngày nọ, chú mèo gặp một con chuột nhắt và họ trở thành bạn bè thân thiết."
+"who developed python?","python was created by guido van rossum and first released in 1991."
+"tạo biến trong lua","local my_variable = 10"
+"how to optimize a query in sql?","to optimize a sql query, ensure proper indexing, avoid using select * in production, use join clauses efficiently, and analyze the query execution plan."
+"cấu trúc dữ liệu là gì?","cấu trúc dữ liệu là một cách tổ chức dữ liệu trong bộ nhớ máy tính để có thể truy cập và sửa đổi dữ liệu một cách hiệu quả."
+"explain a lambda function in python","a lambda function is a small anonymous function in python. it can take any number of arguments, but can only have one expression. it's often used for short, throwaway functions."
+"kể một câu chuyện về công nghệ","có một robot tên là ai-bot, luôn muốn học hỏi mọi thứ về công nghệ. một ngày nọ, ai-bot đã tự mình lập trình một ứng dụng mới giúp mọi người giao tiếp dễ dàng hơn."
+"how to create a class in python?","class MyClass:
+  def __init__(self, value):
+    self.value = value
+  def greet(self):
+    print(f"Hello from {self.value}!")"
