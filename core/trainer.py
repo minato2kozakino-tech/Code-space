@@ -2,6 +2,7 @@ import numpy as np
 import os
 import sys
 import time
+import pandas as pd
 from collections import Counter, defaultdict
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -45,19 +46,26 @@ class MarkovChain:
         return np.random.choice(w_list, p=p_list)
 
 def train_mars(brain, cfg):
-    data_file = cfg['paths']['data_file']
+    data_file = cfg['paths']['conversational_data']
     epochs = cfg['trainer']['epochs']
     lr = cfg['trainer']['learning_rate']
     n_gram = cfg['trainer']['n_gram']
     grad_clip = cfg['trainer']['gradient_clip_norm']
 
     if not os.path.exists(data_file):
-        print("[-] Data file not found.")
+        print("[-] Conversational data file not found.")
         return
     
-    print("[+] Loading and preparing data...")
-    with open(data_file, "r", encoding="utf-8") as f:
-        lines = [l.strip().lower() for l in f if l.strip()]
+    print("[+] Loading and preparing conversational data...")
+    try:
+        df = pd.read_csv(data_file, encoding='utf-8')
+    except pd.errors.ParserError as e:
+        print(f"[-] Error parsing CSV: {e}")
+        return
+    if 'bot' not in df.columns:
+        print("[-] CSV must have 'bot' column.")
+        return
+    lines = df['bot'].dropna().str.lower().tolist()
 
     sentences_ml, labels_ml, tokens_nn = [], [], []
     for l in lines:
@@ -71,78 +79,9 @@ def train_mars(brain, cfg):
     brain.vectorizer = TfidfVectorizer(max_features=5000)
     x_tfidf = brain.vectorizer.fit_transform(sentences_ml)
     brain.lang_classifier = MultinomialNB().fit(x_tfidf, labels_ml)
-    brain.markov_model = MarkovChain(order=cfg['markov_chain']['order']).fit(sentences_ml)
+    brain.markov_model = MarkovChain(order=2).fit(sentences_ml)  # Default order
     
     brain.expand(list(set(tokens_nn)))
-    t_ids = np.array([brain.w2i[t] for t in tokens_nn if t in brain.w2i], dtype=np.uint32)
-    n_samples = len(t_ids) - n_gram
-    if n_samples <= 0: return
-
-    print("[+] Starting Deep Training (Press Ctrl+C to save and stop)...")
-    total_start = time.time()
     
-    try:
-        for ep in range(1, epochs + 1):
-            ep_start = time.time()
-            indices = np.arange(n_samples)
-            np.random.shuffle(indices)
-            
-            for i, idx in enumerate(indices):
-                if i % 100 == 0 or i == n_samples - 1:
-                    now = time.time()
-                    elap_ep = now - ep_start
-                    speed = (i + 1) / elap_ep if elap_ep > 0 else 0
-                    eta_ep = (n_samples - (i + 1)) / speed if speed > 0 else 0
-                    
-                    elap_total = now - total_start
-                    avg_ep_time = elap_total / ep
-                    eta_total = (epochs - ep) * avg_ep_time + eta_ep
-                    
-                    pct = (i + 1) / n_samples
-                    b_len = 15
-                    fill = int(b_len * pct)
-                    bar = "█" * fill + "░" * (b_len - fill)
-                    
-                    msg = "\rEpoch {:02d}/{} |{}| {:.1%} [EP ETA: {:.1f}s, Total ETA: {:.1f}s]".format(
-                        ep, epochs, bar, pct, eta_ep, eta_total
-                    )
-                    print(msg, end='', flush=True)
-
-                ctx = t_ids[idx : idx + n_gram]
-                target = t_ids[idx + n_gram]
-                
-                h1 = np.mean(brain.W_in[ctx], axis=0).reshape(1, -1)
-                z2 = np.dot(h1, brain.W_h) + brain.b_h
-                h2 = relu(z2)
-                logits = np.dot(h2, brain.W_out) + brain.b_out
-                
-                probs = np.exp(logits - np.max(logits))
-                probs /= np.sum(probs)
-                
-                d_logits = probs.copy()
-                d_logits[0, target] -= 1
-                
-                d_W_out = np.dot(h2.T, d_logits)
-                d_b_out = d_logits
-                d_h2 = np.dot(d_logits, brain.W_out.T)
-                d_z2 = d_h2 * relu_derivative(z2)
-                d_W_h = np.dot(h1.T, d_z2)
-                d_b_h = d_z2
-                d_h1 = np.dot(d_z2, brain.W_h.T)
-                
-                for g in [d_W_out, d_b_out, d_W_h, d_b_h, d_h1]:
-                    np.clip(g, -grad_clip, grad_clip, out=g)
-
-                brain.W_out -= lr * d_W_out
-                brain.b_out -= lr * d_b_out
-                brain.W_h -= lr * d_W_h
-                brain.b_h -= lr * d_b_h
-                brain.W_in[ctx] -= lr * d_h1 / n_gram
-                
-            print(" | Epoch {} Done in {:.1f}s".format(ep, time.time() - ep_start))
-            
-    except KeyboardInterrupt:
-        print("\n[!] Training interrupted by user. Saving current state...")
-
     brain.save()
-    print("\n[!] Gaton Model saved successfully.")
+    print("[!] Specialized components fitted and model saved.")

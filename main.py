@@ -53,13 +53,13 @@ def main():
         csv_path = cfg['paths']['conversational_data']
         if os.path.exists(csv_path):
             print(f"[+] Found existing conversational data at {csv_path}.")
-            df = pd.read_csv(csv_path)
+            df = pd.read_csv(csv_path, encoding='utf-8')
             print(f"[+] Loaded {len(df)} conversational pairs.")
         else:
             print(f"[-] Conversational data not found at {csv_path}.")
             print("[*] Please create a CSV file with 'human' and 'bot' columns.")
-            print("[*] Example: human,bot
-"hello","hi!"")
+            print("[*] Example: human,bot")
+            print('    "hello","hi!"')
         print("[!] Data preparation check complete.")
     
     elif choice == 't':

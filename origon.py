@@ -14,8 +14,12 @@ from core.retriever import ContextRetriever
 from core.code_handler import CodeHandler
 
 def load_config():
-    with open(os.path.join(os.path.dirname(__file__), "config/conf.yaml"), "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "config/conf.yaml"), "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        print(f"[-] Error loading config: {e}")
+        return None
 
 def main_cli():
     parser = argparse.ArgumentParser(description="Origon AI CLI Client")
@@ -25,6 +29,9 @@ def main_cli():
 
     args = parser.parse_args()
     cfg = load_config()
+    if cfg is None:
+        sys.exit(1)
+    
     device = torch.device("cpu") # CLI client runs on CPU
 
     # Load components needed for chat
@@ -99,25 +106,39 @@ def main_cli():
                     idx_to_remove[..., 1:] = idx_to_remove[..., :-1].clone()
                     idx_to_remove[..., 0] = 0
                     probs[sorted_indices[idx_to_remove]] = 0
+                    probs[0] = 0
+                    if probs.sum() == 0:
+                        probs = torch.softmax(logits / cfg['chat']['temperature'], dim=-1)
+                        probs[0] = 0
+                    if probs.sum() == 0:
+                        break
                     probs /= probs.sum()
                     
                     next_id = torch.multinomial(probs, 1).item()
                     word = i2w.get(next_id, "")
                     
                     if word == "" or word == "<PAD>" or word == ".":
+                        fallback_ids = [idx.item() for idx in sorted_indices if idx.item() != 0 and i2w.get(idx.item(), "") not in ["", "."]]
+                        if not fallback_ids:
+                            break
+                        next_id = fallback_ids[0]
+                        word = i2w.get(next_id, "")
+                    
+                    if word == "" or word == "<PAD>" or word == ".":
                         break
-                        
+                    
                     res_text.append(word)
                     curr_input = torch.tensor([[next_id]], dtype=torch.long).to(device)
             
-            response = " ".join(res_text).capitalize() + "."
+            if res_text:
+                response = " ".join(res_text).capitalize() + "."
+            else:
+                response = "..."
 
-        print(f"
-AI ({args.model}): {response}")
+        print(f"AI ({args.model}): {response}")
             
     except Exception as e:
-        print(f"
-[-] An unexpected error occurred: {e}")
+        print(f"[-] An unexpected error occurred: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -19,11 +19,18 @@ class ContextRetriever:
             return False
         
         print("[+] Building TF-IDF Index for Retrieval...")
-        self.dataset = pd.read_csv(self.data_path)
-        # We index the 'human' column to match user queries
-        self.tfidf_matrix = self.vectorizer.fit_transform(self.dataset['human'].astype(str))
-        self.save_index()
-        return True
+        try:
+            self.dataset = pd.read_csv(self.data_path, encoding='utf-8', on_bad_lines='skip')
+            if self.dataset.empty or 'human' not in self.dataset.columns:
+                print("[-] Dataset is empty or missing 'human' column.")
+                return False
+            # We index the 'human' column to match user queries
+            self.tfidf_matrix = self.vectorizer.fit_transform(self.dataset['human'].astype(str))
+            self.save_index()
+            return True
+        except Exception as e:
+            print(f"[-] Error building index: {e}")
+            return False
 
     def retrieve(self, query, top_k=None):
         if self.tfidf_matrix is None:
@@ -55,10 +62,14 @@ class ContextRetriever:
 
     def load_index(self):
         if os.path.exists(self.index_path):
-            with open(self.index_path, 'rb') as f:
-                data = pickle.load(f)
-                self.vectorizer = data['vectorizer']
-                self.tfidf_matrix = data['tfidf_matrix']
-                self.dataset = data['dataset']
-            return True
-        return False
+            try:
+                with open(self.index_path, 'rb') as f:
+                    data = pickle.load(f)
+                    self.vectorizer = data['vectorizer']
+                    self.tfidf_matrix = data['tfidf_matrix']
+                    self.dataset = data['dataset']
+                return True
+            except Exception as e:
+                print(f"[-] Error loading index: {e}")
+                return self.build_index()
+        return self.build_index()

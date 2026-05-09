@@ -2,3 +2,6 @@ numpy
 scikit-learn
 PyYAML
 requests
+pandas
+torch
+torchvision

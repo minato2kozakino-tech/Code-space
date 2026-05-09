@@ -50,9 +50,18 @@ def train_gpu():
         print(f"[-] CSV Data not found at {csv_path}. Please create it first.")
         return
     
-    df = pd.read_csv(csv_path)
-    human_texts = df['human'].tolist()
-    bot_texts = df['bot'].tolist()
+    try:
+        df = pd.read_csv(csv_path, encoding='utf-8', on_bad_lines='skip')
+    except Exception as e:
+        print(f"[-] Error reading CSV: {e}")
+        return
+    
+    if df.empty or 'bot' not in df.columns or 'human' not in df.columns:
+        print("[-] CSV must have 'human' and 'bot' columns.")
+        return
+    
+    human_texts = df['human'].dropna().tolist()
+    bot_texts = df['bot'].dropna().tolist()
 
     # 2. Build Intent Classifier & Retriever
     classifier = IntentClassifier(cfg)

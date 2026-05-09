@@ -10,8 +10,12 @@ class CodeHandler:
 
     def _load_json(self, path):
         if os.path.exists(path):
-            with open(path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, ValueError) as e:
+                print(f"[-] Error loading JSON from {path}: {e}")
+                return {}
         return {}
 
     def handle(self, query):

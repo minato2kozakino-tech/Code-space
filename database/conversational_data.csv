@@ -1,18 +1,13 @@
 human,bot
 "xin chào","chào bạn! tôi có thể giúp gì cho bạn?"
 "bạn là ai?","tôi là origon ai, một trợ lý ảo."
-"viết hàm python","def add(a, b):
-  return a + b"
-"hãy viết code lua cho một vòng lặp","for i = 1, 10 do
-  print(i)
-end"
-"tell me about machine learning","machine learning is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to "learn" from data."
+"viết hàm python","def add(a, b): return a + b"
+"hãy viết code lua cho một vòng lặp","for i = 1, 10 do print(i) end"
+"tell me about machine learning","machine learning is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to learn from data."
 "how to use git?","git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. common commands include git clone, git add, git commit, git push."
-"bạn có thể dịch "hello" sang tiếng việt không?","hello có nghĩa là xin chào trong tiếng việt."
-"write a simple python program","print("Hello, World!")"
-"lua function to print a message","function display_msg(msg)
-  print(msg)
-end"
+"bạn có thể dịch hello sang tiếng việt không?","hello có nghĩa là xin chào trong tiếng việt."
+"write a simple python program","print(Hello, World!)"
+"lua function to print a message","function display_msg(msg) print(msg) end"
 "what is deep learning?","deep learning is a subset of machine learning in artificial intelligence that has networks capable of learning unsupervised from data that is unstructured or unlabeled."
 "how to train a neural network?","training a neural network involves feeding it data, computing the loss, and then using backpropagation to update the network's weights and biases."
 "giải thích về tensorflow","tensorflow là một thư viện mã nguồn mở được phát triển bởi google dùng để phát triển và huấn luyện các mô hình học máy và học sâu."

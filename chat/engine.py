@@ -83,10 +83,23 @@ def mars_generate(brain, words, cfg):
             idx_to_remove[..., 1:] = idx_to_remove[..., :-1].clone()
             idx_to_remove[..., 0] = 0
             probs[sorted_indices[idx_to_remove]] = 0
+            probs[0] = 0
+            if probs.sum() == 0:
+                probs = torch.softmax(logits / cfg['chat']['temperature'], dim=-1)
+                probs[0] = 0
+            if probs.sum() == 0:
+                break
             probs /= probs.sum()
             
             next_id = torch.multinomial(probs, 1).item()
             word = i2w.get(next_id, "")
+            
+            if word == "" or word == "<PAD>" or word == ".":
+                fallback_ids = [idx.item() for idx in sorted_indices if idx.item() != 0 and i2w.get(idx.item(), "") not in ["", "."]]
+                if not fallback_ids:
+                    break
+                next_id = fallback_ids[0]
+                word = i2w.get(next_id, "")
             
             if word == "" or word == "<PAD>" or word == ".":
                 break

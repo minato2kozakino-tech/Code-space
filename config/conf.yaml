@@ -4,8 +4,8 @@ project:
 
 paths:
   model_dir: "models"
-  gaton_model: "models/gaton/gaton-v2.pth" # Bundle model path
-  conversational_data: "database/conversational_data.csv"
+  gaton_model: "models/astropic/astropic-1-pro.pth" # Bundle model path
+  conversational_data: "data/minium.csv"
   intent_model: "models/intent/intent_classifier.pkl"
   retriever_data: "database/retriever_index.pkl"
   code_db_lua: "database/lua_data.json"
@@ -21,17 +21,17 @@ retriever:
   tfidf_max_features: 5000
 
 brain: # RNN (GRU) Settings
-  hidden_size: 256
+  hidden_size: 512
   num_layers: 2
-  embedding_dim: 128
+  embedding_dim: 256
   dropout: 0.2
   rnn_type: "GRU" # As recommended for efficiency
 
 trainer:
-  epochs: 200
-  learning_rate: 0.001
-  batch_size: 64
-  n_gram: 10 # Context window for training
+  epochs: 300
+  learning_rate: 0.005
+  batch_size: 128
+  n_gram: 16 # Context window for training
   gradient_clip_norm: 1.0
 
 chat:

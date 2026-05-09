@@ -10,8 +10,7 @@ from core.code_handler import CodeHandler
 
 def start_chat(brain_placeholder, cfg):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"
-[{cfg['project']['name']} Online. Type 'exit' to quit]")
+    print(f"[{cfg['project']['name']} Online. Type 'exit' to quit]")
     
     # Load components for chat
     try:
@@ -91,10 +90,23 @@ def start_chat(brain_placeholder, cfg):
                         idx_to_remove[..., 1:] = idx_to_remove[..., :-1].clone()
                         idx_to_remove[..., 0] = 0
                         probs[sorted_indices[idx_to_remove]] = 0
+                        probs[0] = 0
+                        if probs.sum() == 0:
+                            probs = torch.softmax(logits / cfg['chat']['temperature'], dim=-1)
+                            probs[0] = 0
+                        if probs.sum() == 0:
+                            break
                         probs /= probs.sum()
                         
                         next_id = torch.multinomial(probs, 1).item()
                         word = i2w.get(next_id, "")
+                        
+                        if word == "" or word == "<PAD>" or word == ".":
+                            fallback_ids = [idx.item() for idx in sorted_indices if idx.item() != 0 and i2w.get(idx.item(), "") not in ["", "."]]
+                            if not fallback_ids:
+                                break
+                            next_id = fallback_ids[0]
+                            word = i2w.get(next_id, "")
                         
                         if word == "" or word == "<PAD>" or word == ".":
                             break
@@ -102,7 +114,10 @@ def start_chat(brain_placeholder, cfg):
                         res_text.append(word)
                         curr_input = torch.tensor([[next_id]], dtype=torch.long).to(device)
                 
-                response = " ".join(res_text).capitalize() + "."
+                if res_text:
+                    response = " ".join(res_text).capitalize() + "."
+                else:
+                    response = "..."
 
             print("AI: " + response)
             

@@ -3,31 +3,21 @@
         "def", "class", "import", "from", "as", "if", "else", "elif", "for", "in", "while", "break", "continue", "return", "yield", "try", "except", "finally", "with", "open", "lambda", "True", "False", "None", "and", "or", "not", "is", "assert"
     ],
     "syntax_patterns_python": [
-        "def function_name(args):
-  pass",
-        "class ClassName:
-  def __init__(self):
-    pass",
-        "if condition:
-  pass",
-        "for item in list:
-  pass",
-        "while condition:
-  pass",
+        "def function_name(args): pass",
+        "class ClassName: def __init__(self): pass",
+        "if condition: pass",
+        "for item in list: pass",
+        "while condition: pass",
         "print('message')"
     ],
     "common_snippets_python": [
         "print('Hello Python!')",
-        "x = 10
-y = x * 2",
-        "def greet(name):
-  return f"Hello, {name}!"",
-        "my_list = [1, 2, 3]
-for item in my_list:
-  print(item)",
-        "try:
-  result = 1 / 0
-except ZeroDivisionError:
-  print('Cannot divide by zero')"
+        "x = 10",
+        "result = x * 2",
+        "if x > 5: print('x is greater than 5')",
+        "for i in range(5): print(i)",
+        "def greet(name): return f'Hello, {name}!'",
+        "my_list = [1, 2, 3]; for item in my_list: print(item)",
+        "try: result = 1 / 0; except ZeroDivisionError: print('Cannot divide by zero')"
     ]
 }
