@@ -1,25 +1,113 @@
 human,bot
-"xin chào","chào bạn! tôi có thể giúp gì cho bạn?"
-"bạn là ai?","tôi là origon ai, một trợ lý ảo."
-"viết hàm python","def add(a, b): return a + b"
-"hãy viết code lua cho một vòng lặp","for i = 1, 10 do print(i) end"
-"tell me about machine learning","machine learning is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to learn from data."
-"how to use git?","git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. common commands include git clone, git add, git commit, git push."
-"bạn có thể dịch hello sang tiếng việt không?","hello có nghĩa là xin chào trong tiếng việt."
-"write a simple python program","print(Hello, World!)"
-"lua function to print a message","function display_msg(msg) print(msg) end"
-"what is deep learning?","deep learning is a subset of machine learning in artificial intelligence that has networks capable of learning unsupervised from data that is unstructured or unlabeled."
-"how to train a neural network?","training a neural network involves feeding it data, computing the loss, and then using backpropagation to update the network's weights and biases."
-"giải thích về tensorflow","tensorflow là một thư viện mã nguồn mở được phát triển bởi google dùng để phát triển và huấn luyện các mô hình học máy và học sâu."
-"viết một câu chuyện ngắn","ngày xửa ngày xưa, có một chú mèo con rất thích khám phá thế giới xung quanh. một ngày nọ, chú mèo gặp một con chuột nhắt và họ trở thành bạn bè thân thiết."
-"who developed python?","python was created by guido van rossum and first released in 1991."
-"tạo biến trong lua","local my_variable = 10"
-"how to optimize a query in sql?","to optimize a sql query, ensure proper indexing, avoid using select * in production, use join clauses efficiently, and analyze the query execution plan."
-"cấu trúc dữ liệu là gì?","cấu trúc dữ liệu là một cách tổ chức dữ liệu trong bộ nhớ máy tính để có thể truy cập và sửa đổi dữ liệu một cách hiệu quả."
-"explain a lambda function in python","a lambda function is a small anonymous function in python. it can take any number of arguments, but can only have one expression. it's often used for short, throwaway functions."
-"kể một câu chuyện về công nghệ","có một robot tên là ai-bot, luôn muốn học hỏi mọi thứ về công nghệ. một ngày nọ, ai-bot đã tự mình lập trình một ứng dụng mới giúp mọi người giao tiếp dễ dàng hơn."
-"how to create a class in python?","class MyClass:
-  def __init__(self, value):
-    self.value = value
-  def greet(self):
-    print(f"Hello from {self.value}!")"
+how are you?,"I'm fine, thank you. How can I help you today?"
+xin chào,xin chào! tôi có thể giúp gì cho bạn?
+what is your name?,"I am Origon AI, your virtual assistant."
+bạn tên là gì?,"tôi là Origon AI, trợ lý ảo của bạn."
+tell me a joke,Why did the computer go to the doctor? Because it had a virus!
+kể một câu chuyện vui,"có một con mèo rất tò mò, nó đã khám phá cả khu vườn và tìm thấy một chiếc nắp nồi."
+how do I learn English?,"Practice every day, watch videos, and speak with others."
+làm sao để học tiếng anh nhanh?,bạn nên học từ vựng theo chủ đề và luyện nghe mỗi ngày.
+what is AI?,AI is the ability of a machine to perform tasks that normally require human intelligence.
+trí tuệ nhân tạo là gì?,trí tuệ nhân tạo là công nghệ giúp máy móc học và suy nghĩ giống con người.
+how to make coffee?,"Boil water, add ground coffee, and pour over a filter."
+cách pha cà phê như thế nào?,"đun nước sôi, cho cà phê vào phin, rót nước và chờ chiết xuất."
+what is your favorite color?,"I don't have a favorite color, but I like bright and friendly tones."
+bạn thích màu gì?,tôi thích màu sáng và dễ chịu.
+can you help me with homework?,"Yes, I can explain concepts and give examples for your homework."
+bạn có thể giúp tôi làm bài tập không?,"có, tôi có thể giải thích khái niệm và đưa ví dụ cho bạn."
+where are you from?,I was created by your project team and I live in this app.
+bạn đến từ đâu?,tôi được tạo ra bởi dự án của bạn và sống trong ứng dụng này.
+what time is it?,"I don't have a clock, but you can check your device for the current time."
+bây giờ là mấy giờ?,"tôi không có đồng hồ, bạn hãy kiểm tra trên thiết bị nhé."
+how can I improve my writing?,"Write daily, read good texts, and ask for feedback."
+làm sao để viết văn tốt hơn?,"hãy viết mỗi ngày, đọc văn hay và nhờ người khác góp ý."
+do you speak Vietnamese?,"Yes, I can communicate in Vietnamese and English."
+bạn có nói được tiếng anh không?,"có, tôi nói được tiếng Việt và tiếng Anh."
+what is machine learning?,Machine learning is a way for computers to learn from data.
+học máy là gì?,học máy là cách để máy tính tự học từ dữ liệu.
+how to stay healthy?,"Eat well, exercise regularly, and get enough sleep."
+làm sao để khỏe mạnh?,"hãy ăn uống đầy đủ, tập thể dục đều, và ngủ đủ giấc."
+where is the nearest bank?,You can use a maps app to find the nearest bank in your area.
+ngân hàng gần nhất ở đâu?,bạn có thể dùng ứng dụng bản đồ để tìm ngân hàng gần nhất.
+what is the weather today?,"I can't see the weather, but you can check a weather app."
+thời tiết hôm nay thế nào?,"tôi không biết thời tiết, bạn hãy mở ứng dụng dự báo thời tiết."
+can we chat?,Of course! I am ready to chat with you anytime.
+chúng ta có thể nói chuyện không?,tất nhiên! tôi luôn sẵn sàng trò chuyện với bạn.
+please explain this concept,"Sure, tell me which concept you want me to explain."
+xin hãy giải thích khái niệm này,"được, hãy nói cho tôi biết bạn muốn giải thích khái niệm nào."
+how do I save money?,"Make a budget, set goals, and avoid unnecessary spending."
+làm thế nào để tiết kiệm tiền?,"hãy lập ngân sách, đặt mục tiêu và tránh chi tiêu không cần thiết."
+what should I cook tonight?,Maybe try a simple pasta dish or a quick stir-fry.
+tối nay tôi nên nấu gì?,có thể thử nấu mì ống đơn giản hoặc xào nhanh.
+what are your hobbies?,I enjoy helping people and learning new things.
+sở thích của bạn là gì?,tôi thích giúp đỡ mọi người và học điều mới.
+how to learn coding?,"Start with basics, practice small projects, and ask questions."
+làm sao để học lập trình?,"bắt đầu với kiến thức cơ bản, thực hành dự án nhỏ và hỏi khi cần."
+what is the best way to relax?,"Take a short walk, listen to music, or practice deep breathing."
+cách thư giãn tốt nhất?,"đi bộ ngắn, nghe nhạc hoặc thở sâu vài lần."
+could you translate this?,"Yes, send me the sentence and I will translate it for you."
+bạn có thể dịch câu này không?,"có, gửi câu đó cho tôi và tôi sẽ dịch giúp bạn."
+do you know Python?,"Yes, Python is a popular programming language for many applications."
+bạn biết Python không?,"có, Python là ngôn ngữ lập trình phổ biến cho nhiều ứng dụng."
+how to improve speaking skills?,Practice speaking every day and listen to native speakers.
+làm sao để cải thiện kỹ năng nói?,hãy luyện nói mỗi ngày và nghe người bản ngữ.
+what can you do?,"I can answer questions, explain ideas, and help you practice language."
+bạn có thể làm gì?,"tôi có thể trả lời câu hỏi, giải thích ý tưởng, và giúp bạn luyện ngôn ngữ."
+when is your birthday?,"I do not have a birthday, but I am always here to assist you."
+bạn sinh nhật khi nào?,"tôi không có sinh nhật, nhưng tôi luôn ở đây để hỗ trợ bạn."
+how do I make a plan?,"Write down your tasks, set deadlines, and review progress regularly."
+làm sao để lập kế hoạch?,"hãy ghi lại nhiệm vụ, đặt hạn, và kiểm tra tiến độ thường xuyên."
+what is a good habit?,"Reading regularly, staying organized, and being kind are good habits."
+thói quen tốt là gì?,"đọc sách thường xuyên, sắp xếp gọn gàng, và sống tử tế là thói quen tốt."
+why should I learn?,"Learning helps you grow, solve problems, and achieve your goals."
+tại sao tôi nên học?,"học giúp bạn phát triển, giải quyết vấn đề và đạt mục tiêu."
+can you give advice?,"Yes, I can give advice based on your questions and situation."
+bạn có thể cho lời khuyên không?,"có, tôi có thể cho lời khuyên dựa trên câu hỏi và hoàn cảnh của bạn."
+what is teamwork?,Teamwork is working together with others to achieve a common goal.
+điều gì là làm việc nhóm?,làm việc nhóm là cùng nhau hợp tác để đạt mục tiêu chung.
+how to make friends?,"Be friendly, listen well, and share common interests."
+làm sao để kết bạn?,"hãy thân thiện, lắng nghe và chia sẻ sở thích chung."
+what is self-care?,"Self-care means taking time to rest, eat well, and care for yourself."
+chăm sóc bản thân là gì?,"chăm sóc bản thân là dành thời gian nghỉ ngơi, ăn uống đầy đủ và chăm sóc mình."
+how to stay motivated?,"Set small goals, celebrate progress, and remind yourself why you started."
+làm sao để giữ động lực?,"hãy đặt mục tiêu nhỏ, ăn mừng tiến bộ, và nhắc bản thân lý do bạn bắt đầu."
+what should I study?,Choose a topic you enjoy and learn a little every day.
+tôi nên học gì?,hãy chọn chủ đề bạn thích và học một ít mỗi ngày.
+what is a good question?,"A good question is clear, specific, and helps you learn more."
+câu hỏi hay là gì?,"câu hỏi hay là câu rõ ràng, cụ thể và giúp bạn học thêm."
+what is gratitude?,Gratitude is feeling thankful for the good things in your life.
+lòng biết ơn là gì?,lòng biết ơn là cảm thấy trân trọng những điều tốt đẹp trong cuộc sống.
+how can I be more organized?,"Use lists, set reminders, and keep your space tidy."
+làm sao để sắp xếp gọn gàng hơn?,"hãy dùng danh sách, đặt nhắc nhở, và giữ không gian ngăn nắp."
+what is a healthy diet?,"A healthy diet includes vegetables, fruits, protein, and water."
+chế độ ăn lành mạnh là gì?,"chế độ ăn lành mạnh bao gồm rau, trái cây, protein và nước."
+can you teach me Vietnamese?,"Yes, I can teach simple Vietnamese phrases and basic words."
+bạn có thể dạy tôi tiếng việt không?,"có, tôi có thể dạy những cụm từ tiếng Việt đơn giản và các từ cơ bản."
+how to manage time?,"Prioritize tasks, avoid distractions, and take breaks."
+làm sao quản lý thời gian?,"hãy ưu tiên nhiệm vụ, tránh phân tâm và nghỉ giải lao."
+what is a good goal?,"A good goal is specific, measurable, and meaningful to you."
+mục tiêu tốt là gì?,"mục tiêu tốt là cụ thể, đo được và có ý nghĩa với bạn."
+what is creativity?,Creativity is using your imagination to make new ideas.
+sáng tạo là gì?,sáng tạo là dùng trí tưởng tượng để tạo ra ý tưởng mới.
+can you summarize this?,"Yes, send the text and I will give you a short summary."
+bạn có thể tóm tắt điều này không?,"có, gửi văn bản và tôi sẽ đưa cho bạn bản tóm tắt ngắn."
+how to solve a problem?,"Understand the problem, make a plan, and try one step at a time."
+làm sao để giải quyết vấn đề?,"hiểu vấn đề, lập kế hoạch và thử từng bước một."
+what is patience?,Patience means waiting calmly and not giving up quickly.
+kiên nhẫn là gì?,kiên nhẫn là chờ đợi bình tĩnh và không từ bỏ nhanh chóng.
+how do I stay positive?,"Focus on good things, be kind to yourself, and look for solutions."
+làm sao để giữ thái độ tích cực?,"hãy tập trung vào điều tốt, tử tế với bản thân và tìm giải pháp."
+what is a good book?,"A good book is interesting, inspiring, and easy to understand."
+quyển sách hay là gì?,"quyển sách hay là quyển thú vị, truyền cảm hứng và dễ hiểu."
+can you answer my question?,"Yes, please ask your question clearly and I will answer it."
+bạn có thể trả lời câu hỏi của tôi không?,"có, hãy hỏi rõ ràng và tôi sẽ trả lời."
+how do I feel better?,"Talk to someone, rest, and do something you enjoy."
+làm sao để cảm thấy tốt hơn?,"hãy nói chuyện với ai đó, nghỉ ngơi và làm điều bạn thích."
+what is teamwork?,Teamwork is doing things together and helping each other.
+vì sao phải học teamwork?,vì làm việc nhóm giúp hoàn thành tốt hơn và học hỏi lẫn nhau.
+what are your limitations?,"I can provide information and suggestions, but I can't perform real-world actions."
+bạn có hạn chế gì không?,"tôi có thể cung cấp thông tin và gợi ý, nhưng không thể thực hiện hành động ngoài đời thực."
+how do I create a study plan?,"List your subjects, set study times, and review each day."
+làm sao để tạo kế hoạch học tập?,"liệt kê môn học, đặt thời gian học, và ôn lại mỗi ngày."
+what is confidence?,Confidence is believing in yourself and your abilities.
+tự tin là gì?,tự tin là tin vào bản thân và khả năng của mình.

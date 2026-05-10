@@ -1,5 +1,7 @@
+import csv
 import pickle
 import os
+import re
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -13,18 +15,59 @@ class ContextRetriever:
         self.tfidf_matrix = None
         self.dataset = None
 
+    def load_conversational_csv(self, csv_path):
+        cleaned = []
+        metadata_pattern = re.compile(r'^(.*),Bloom-[^,]+,\d+,\d+,\d+$')
+
+        with open(csv_path, 'r', encoding='utf-8', errors='replace') as f:
+            for raw_line in f:
+                line = raw_line.strip()
+                if not line:
+                    continue
+                if line.lower() == 'human,bot':
+                    continue
+
+                metadata_match = metadata_pattern.match(line)
+                if metadata_match:
+                    human = metadata_match.group(1).strip()
+                    if human.startswith('"') and human.endswith('"'):
+                        human = human[1:-1].replace('""', '"')
+                    cleaned.append([human, human])
+                    continue
+
+                try:
+                    row = next(csv.reader([line], skipinitialspace=True))
+                except Exception:
+                    row = [line]
+
+                if len(row) >= 2:
+                    second = str(row[1]).strip()
+                    if re.fullmatch(r'[A-Za-z0-9_-]+', second) and all(str(c).strip().isdigit() for c in row[2:]):
+                        cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+                    else:
+                        cleaned.append([str(row[0]).strip(), second])
+                else:
+                    cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+
+        if not cleaned:
+            print(f"[!] No usable conversation rows found in {csv_path}")
+            return None
+        df = pd.DataFrame(cleaned, columns=['human', 'bot'])
+        df['human'] = df['human'].astype(str)
+        df['bot'] = df['bot'].astype(str)
+        return df
+
     def build_index(self):
         if not os.path.exists(self.data_path):
             print(f"[-] Conversational data not found at {self.data_path}")
             return False
         
         print("[+] Building TF-IDF Index for Retrieval...")
+        self.dataset = self.load_conversational_csv(self.data_path)
+        if self.dataset is None or self.dataset.empty or 'human' not in self.dataset.columns:
+            print("[-] Dataset is empty or missing 'human' column.")
+            return False
         try:
-            self.dataset = pd.read_csv(self.data_path, encoding='utf-8', on_bad_lines='skip')
-            if self.dataset.empty or 'human' not in self.dataset.columns:
-                print("[-] Dataset is empty or missing 'human' column.")
-                return False
-            # We index the 'human' column to match user queries
             self.tfidf_matrix = self.vectorizer.fit_transform(self.dataset['human'].astype(str))
             self.save_index()
             return True

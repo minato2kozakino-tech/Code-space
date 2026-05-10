@@ -1,5 +1,7 @@
+import csv
 import numpy as np
 import os
+import re
 import sys
 import time
 import pandas as pd
@@ -45,6 +47,46 @@ class MarkovChain:
         p_list = np.array(p_list); p_list /= p_list.sum()
         return np.random.choice(w_list, p=p_list)
 
+
+def load_conversational_csv(csv_path):
+    cleaned = []
+    metadata_pattern = re.compile(r'^(.*),Bloom-[^,]+,\d+,\d+,\d+$')
+
+    with open(csv_path, 'r', encoding='utf-8', errors='replace') as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.lower() == 'human,bot':
+                continue
+
+            metadata_match = metadata_pattern.match(line)
+            if metadata_match:
+                human = metadata_match.group(1).strip()
+                if human.startswith('"') and human.endswith('"'):
+                    human = human[1:-1].replace('""', '"')
+                cleaned.append([human, human])
+                continue
+
+            try:
+                row = next(csv.reader([line], skipinitialspace=True))
+            except Exception:
+                row = [line]
+
+            if len(row) >= 2:
+                second = str(row[1]).strip()
+                if re.fullmatch(r'[A-Za-z0-9_-]+', second) and all(str(c).strip().isdigit() for c in row[2:]):
+                    cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+                else:
+                    cleaned.append([str(row[0]).strip(), second])
+            else:
+                cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+
+    if not cleaned:
+        raise ValueError(f"No usable conversation rows found in {csv_path}")
+    return pd.DataFrame(cleaned, columns=['human', 'bot'])
+
+
 def train_mars(brain, cfg):
     data_file = cfg['paths']['conversational_data']
     epochs = cfg['trainer']['epochs']
@@ -58,8 +100,8 @@ def train_mars(brain, cfg):
     
     print("[+] Loading and preparing conversational data...")
     try:
-        df = pd.read_csv(data_file, encoding='utf-8')
-    except pd.errors.ParserError as e:
+        df = load_conversational_csv(data_file)
+    except Exception as e:
         print(f"[-] Error parsing CSV: {e}")
         return
     if 'bot' not in df.columns:

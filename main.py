@@ -1,4 +1,6 @@
+import csv
 import os
+import re
 import sys
 import yaml
 import pandas as pd
@@ -20,6 +22,46 @@ def load_config():
         sys.exit(1)
     with open(config_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def load_conversational_csv(csv_path):
+    cleaned = []
+    metadata_pattern = re.compile(r'^(.*),Bloom-[^,]+,\d+,\d+,\d+$')
+
+    with open(csv_path, 'r', encoding='utf-8', errors='replace') as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.lower() == 'human,bot':
+                continue
+
+            metadata_match = metadata_pattern.match(line)
+            if metadata_match:
+                human = metadata_match.group(1).strip()
+                if human.startswith('"') and human.endswith('"'):
+                    human = human[1:-1].replace('""', '"')
+                cleaned.append([human, human])
+                continue
+
+            try:
+                row = next(csv.reader([line], skipinitialspace=True))
+            except Exception:
+                row = [line]
+
+            if len(row) >= 2:
+                second = str(row[1]).strip()
+                if re.fullmatch(r'[A-Za-z0-9_-]+', second) and all(str(c).strip().isdigit() for c in row[2:]):
+                    cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+                else:
+                    cleaned.append([str(row[0]).strip(), second])
+            else:
+                cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+
+    if not cleaned:
+        raise ValueError(f"No usable conversation rows found in {csv_path}")
+    return pd.DataFrame(cleaned, columns=['human', 'bot'])
+
 
 def main():
     cfg = load_config()
@@ -53,8 +95,12 @@ def main():
         csv_path = cfg['paths']['conversational_data']
         if os.path.exists(csv_path):
             print(f"[+] Found existing conversational data at {csv_path}.")
-            df = pd.read_csv(csv_path, encoding='utf-8')
-            print(f"[+] Loaded {len(df)} conversational pairs.")
+            try:
+                df = load_conversational_csv(csv_path)
+                print(f"[+] Loaded {len(df)} conversational pairs.")
+            except Exception as e:
+                print(f"[-] Error loading conversational data: {e}")
+                print("[*] Please verify the CSV format or use a cleaner 2-column dataset.")
         else:
             print(f"[-] Conversational data not found at {csv_path}.")
             print("[*] Please create a CSV file with 'human' and 'bot' columns.")

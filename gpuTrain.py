@@ -1,3 +1,4 @@
+import csv
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -7,6 +8,7 @@ import os
 import yaml
 import time
 import pickle
+import re
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -19,6 +21,45 @@ from core.retriever import ContextRetriever
 def load_config():
     with open("config/conf.yaml", "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def load_conversational_csv(csv_path):
+    cleaned = []
+    metadata_pattern = re.compile(r'^(.*),Bloom-[^,]+,\d+,\d+,\d+$')
+
+    with open(csv_path, 'r', encoding='utf-8', errors='replace') as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.lower() == 'human,bot':
+                continue
+
+            metadata_match = metadata_pattern.match(line)
+            if metadata_match:
+                human = metadata_match.group(1).strip()
+                if human.startswith('"') and human.endswith('"'):
+                    human = human[1:-1].replace('""', '"')
+                cleaned.append([human, human])
+                continue
+
+            try:
+                row = next(csv.reader([line], skipinitialspace=True))
+            except Exception:
+                row = [line]
+
+            if len(row) >= 2:
+                second = str(row[1]).strip()
+                if re.fullmatch(r'[A-Za-z0-9_-]+', second) and all(str(c).strip().isdigit() for c in row[2:]):
+                    cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+                else:
+                    cleaned.append([str(row[0]).strip(), second])
+            else:
+                cleaned.append([str(row[0]).strip(), str(row[0]).strip()])
+
+    if not cleaned:
+        raise ValueError(f"No usable conversation rows found in {csv_path}")
+    return pd.DataFrame(cleaned, columns=['human', 'bot'])
 
 # --- CUSTOM DATASET FOR CONVERSATIONAL TRAINING ---
 class ConversationalDataset(Dataset):
@@ -50,18 +91,14 @@ def train_gpu():
         print(f"[-] CSV Data not found at {csv_path}. Please create it first.")
         return
     
-    try:
-        df = pd.read_csv(csv_path, encoding='utf-8', on_bad_lines='skip')
-    except Exception as e:
-        print(f"[-] Error reading CSV: {e}")
-        return
+    df = load_conversational_csv(csv_path)
     
     if df.empty or 'bot' not in df.columns or 'human' not in df.columns:
         print("[-] CSV must have 'human' and 'bot' columns.")
         return
     
-    human_texts = df['human'].dropna().tolist()
-    bot_texts = df['bot'].dropna().tolist()
+    human_texts = [str(x) for x in df['human'].dropna().tolist()]
+    bot_texts = [str(x) for x in df['bot'].dropna().tolist()]
 
     # 2. Build Intent Classifier & Retriever
     classifier = IntentClassifier(cfg)

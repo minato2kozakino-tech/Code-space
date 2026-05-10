@@ -1,44 +1,51 @@
+# Project metadata
 project:
-  name: "Origon AI"
-  version: "2.0-deep-conversational"
+  name: "Origon AI"           # Tên của dự án hoặc chatbot
+  version: "2.0-deep-conversational"  # Phiên bản hiện tại của cấu hình
 
+# Đường dẫn tới dữ liệu và mô hình
 paths:
-  model_dir: "models"
-  gaton_model: "models/astropic/astropic-1-pro.pth" # Bundle model path
-  conversational_data: "data/minium.csv"
-  intent_model: "models/intent/intent_classifier.pkl"
-  retriever_data: "database/retriever_index.pkl"
-  code_db_lua: "database/lua_data.json"
-  code_db_python: "database/python_data.json"
+  model_dir: "models"                # Thư mục chứa các model chung
+  gaton_model: "models/astropic/astropic-1.5-plus.pth"  # Đường dẫn tới model chính dùng cho chat
+  conversational_data: "database/conversational_data.csv"  # Dữ liệu hội thoại để train hoặc load
+  intent_model: "models/intent/intent_classifier.pkl"  # Mô hình phân loại intent
+  retriever_data: "database/retriever_index.pkl"  # Dữ liệu chỉ mục retriever/thuật toán tìm kiếm
+  code_db_lua: "database/lua_data.json"    # Cơ sở dữ liệu câu hỏi/lệnh Lua
+  code_db_python: "database/python_data.json"  # Cơ sở dữ liệu câu hỏi/lệnh Python
 
+# Cấu hình bộ phân loại intent
 intent_classifier:
-  model_type: "LogisticRegression"
-  tfidf_max_features: 2000
-  labels: ["chat", "code"]
+  model_type: "LogisticRegression"  # Thuật toán học máy dùng để phân loại intent
+  tfidf_max_features: 2000          # Số lượng đặc trưng TF-IDF tối đa
+  labels: ["chat", "code"]       # Các nhãn intent mà mô hình sẽ phân loại
 
+# Cấu hình retriever để lấy ngữ cảnh gần nhất
 retriever:
-  top_k: 3 # Number of similar sentences to fetch as context
-  tfidf_max_features: 5000
+  top_k: 3                         # Số câu tương tự lấy về để làm ngữ cảnh
+  tfidf_max_features: 5000         # Số lượng đặc trưng TF-IDF cho retriever
 
+# Cấu hình mạng neural bộ não (RNN/GRU)
 brain: # RNN (GRU) Settings
-  hidden_size: 512
-  num_layers: 2
-  embedding_dim: 256
-  dropout: 0.2
-  rnn_type: "GRU" # As recommended for efficiency
+  hidden_size: 512                 # Kích thước vector ẩn của RNN
+  num_layers: 2                    # Số lớp RNN xếp chồng
+  embedding_dim: 256               # Kích thước embedding cho từ/ngữ
+  dropout: 0.2                     # Tỷ lệ dropout để giảm overfitting
+  rnn_type: "GRU"                 # Loại RNN: GRU được chọn vì hiệu quả và nhanh
 
+# Cấu hình huấn luyện
 trainer:
-  epochs: 300
-  learning_rate: 0.005
-  batch_size: 128
-  n_gram: 16 # Context window for training
-  gradient_clip_norm: 1.0
+  epochs: 550                      # Số epoch huấn luyện
+  learning_rate: 0.005             # Hệ số học
+  batch_size: 60000                # Kích thước batch khi train
+  n_gram: 16                       # Độ dài ngữ cảnh (n-gram) cho huấn luyện
+  gradient_clip_norm: 1.0          # Giới hạn chuẩn gradient để tránh exploding gradient
 
+# Cấu hình tạo câu trả lời/chat
 chat:
-  max_len: 60
-  temperature: 0.7
-  top_p: 0.85
+  max_len: 60                      # Độ dài tối đa của câu trả lời
+  temperature: 0.65                # Độ đa dạng khi sinh text (thấp hơn = ổn định hơn)
+  top_p: 0.85                      # Lọc nhân xác xuất cho mô hình sinh
   repetition_penalty:
-    base: 2.0 # Adjusted for RNN
-    incremental: 0.5
-  context_window: 5
+    base: 2.0                      # Độ phạt cho lặp lại từ/cụm
+    incremental: 0.5               # Tăng phạt lặp khi câu trả lời dài hơn
+  context_window: 7                # Số câu trước lấy làm ngữ cảnh cho mỗi lần chat
