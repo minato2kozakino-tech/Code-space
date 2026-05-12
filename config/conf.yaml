@@ -6,7 +6,7 @@ project:
 # Đường dẫn tới dữ liệu và mô hình
 paths:
   model_dir: "models"                # Thư mục chứa các model chung
-  gaton_model: "models/astropic/astropic-1.5-plus.pth"  # Đường dẫn tới model chính dùng cho chat
+  gaton_model: "models/sarmat/sarmat-1.pth"  # Đường dẫn tới model chính dùng cho chat
   conversational_data: "database/conversational_data.csv"  # Dữ liệu hội thoại để train hoặc load
   intent_model: "models/intent/intent_classifier.pkl"  # Mô hình phân loại intent
   retriever_data: "database/retriever_index.pkl"  # Dữ liệu chỉ mục retriever/thuật toán tìm kiếm
@@ -27,7 +27,7 @@ retriever:
 # Cấu hình mạng neural bộ não (RNN/GRU)
 brain: # RNN (GRU) Settings
   hidden_size: 512                 # Kích thước vector ẩn của RNN
-  num_layers: 2                    # Số lớp RNN xếp chồng
+  num_layers: 4                    # Số lớp RNN xếp chồng
   embedding_dim: 256               # Kích thước embedding cho từ/ngữ
   dropout: 0.2                     # Tỷ lệ dropout để giảm overfitting
   rnn_type: "GRU"                 # Loại RNN: GRU được chọn vì hiệu quả và nhanh
@@ -36,16 +36,16 @@ brain: # RNN (GRU) Settings
 trainer:
   epochs: 550                      # Số epoch huấn luyện
   learning_rate: 0.005             # Hệ số học
-  batch_size: 60000                # Kích thước batch khi train
-  n_gram: 16                       # Độ dài ngữ cảnh (n-gram) cho huấn luyện
-  gradient_clip_norm: 1.0          # Giới hạn chuẩn gradient để tránh exploding gradient
+  batch_size: 30000                # Kích thước batch khi train
+  n_gram: 32                       # Độ dài ngữ cảnh (n-gram) cho huấn luyện
+  gradient_clip_norm: 1.5         # Giới hạn chuẩn gradient để tránh exploding gradient
 
 # Cấu hình tạo câu trả lời/chat
 chat:
   max_len: 60                      # Độ dài tối đa của câu trả lời
-  temperature: 0.65                # Độ đa dạng khi sinh text (thấp hơn = ổn định hơn)
-  top_p: 0.85                      # Lọc nhân xác xuất cho mô hình sinh
+  temperature: 0.7                # Độ đa dạng khi sinh text (thấp hơn = ổn định hơn)
+  top_p: 0.9                      # Lọc nhân xác xuất cho mô hình sinh
   repetition_penalty:
     base: 2.0                      # Độ phạt cho lặp lại từ/cụm
     incremental: 0.5               # Tăng phạt lặp khi câu trả lời dài hơn
-  context_window: 7                # Số câu trước lấy làm ngữ cảnh cho mỗi lần chat
+  context_window: 30                # Số câu trước lấy làm ngữ cảnh cho mỗi lần chat
