@@ -5,8 +5,12 @@ import random
 class CodeHandler:
     def __init__(self, cfg):
         self.cfg = cfg
-        self.lua_db = self._load_json(cfg['paths']['code_db_lua'])
-        self.python_db = self._load_json(cfg['paths']['code_db_python'])
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        paths = cfg.get('paths', {})
+        lua_path = paths.get('code_db_lua', os.path.join(base_dir, 'database', 'lua_data.json'))
+        python_path = paths.get('code_db_python', os.path.join(base_dir, 'database', 'python_data.json'))
+        self.lua_db = self._load_json(lua_path)
+        self.python_db = self._load_json(python_path)
 
     def _load_json(self, path):
         if os.path.exists(path):

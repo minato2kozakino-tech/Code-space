@@ -6,12 +6,10 @@ project:
 # Đường dẫn tới dữ liệu và mô hình
 paths:
   model_dir: "models"                # Thư mục chứa các model chung
-  gaton_model: "models/sarmat/sarmat-1.pth"  # Đường dẫn tới model chính dùng cho chat
-  conversational_data: "database/conversational_data.csv"  # Dữ liệu hội thoại để train hoặc load
+  gaton_model: "models/sarmat/sarmat-1.5-noob.pth"  # Đường dẫn tới model chính dùng cho chat
+  conversational_data: "database/10k.csv"  # Dữ liệu hội thoại để train hoặc load
   intent_model: "models/intent/intent_classifier.pkl"  # Mô hình phân loại intent
   retriever_data: "database/retriever_index.pkl"  # Dữ liệu chỉ mục retriever/thuật toán tìm kiếm
-  code_db_lua: "database/lua_data.json"    # Cơ sở dữ liệu câu hỏi/lệnh Lua
-  code_db_python: "database/python_data.json"  # Cơ sở dữ liệu câu hỏi/lệnh Python
 
 # Cấu hình bộ phân loại intent
 intent_classifier:
@@ -26,19 +24,19 @@ retriever:
 
 # Cấu hình mạng neural bộ não (RNN/GRU)
 brain: # RNN (GRU) Settings
-  hidden_size: 512                 # Kích thước vector ẩn của RNN
-  num_layers: 4                    # Số lớp RNN xếp chồng
+  hidden_size: 128                 # Kích thước vector ẩn của RNN
+  num_layers: 8                    # Số lớp RNN xếp chồng
   embedding_dim: 256               # Kích thước embedding cho từ/ngữ
   dropout: 0.2                     # Tỷ lệ dropout để giảm overfitting
   rnn_type: "GRU"                 # Loại RNN: GRU được chọn vì hiệu quả và nhanh
 
 # Cấu hình huấn luyện
 trainer:
-  epochs: 550                      # Số epoch huấn luyện
+  epochs: 750                      # Số epoch huấn luyện
   learning_rate: 0.005             # Hệ số học
-  batch_size: 30000                # Kích thước batch khi train
-  n_gram: 32                       # Độ dài ngữ cảnh (n-gram) cho huấn luyện
-  gradient_clip_norm: 1.5         # Giới hạn chuẩn gradient để tránh exploding gradient
+  batch_size: 45000                # Kích thước batch khi train
+  n_gram: 16                      # Độ dài ngữ cảnh (n-gram) cho huấn luyện
+  gradient_clip_norm: 2         # Giới hạn chuẩn gradient để tránh exploding gradient
 
 # Cấu hình tạo câu trả lời/chat
 chat:
@@ -48,4 +46,4 @@ chat:
   repetition_penalty:
     base: 2.0                      # Độ phạt cho lặp lại từ/cụm
     incremental: 0.5               # Tăng phạt lặp khi câu trả lời dài hơn
-  context_window: 30                # Số câu trước lấy làm ngữ cảnh cho mỗi lần chat
+  context_window: 6000               # Số câu trước lấy làm ngữ cảnh cho mỗi lần chat

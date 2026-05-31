@@ -6,6 +6,7 @@ import yaml
 import pickle
 import torch
 import numpy as np
+import datetime
 
 # Import our new modules
 from core.rnn_model import OrigonGRU
@@ -134,6 +135,15 @@ def main_cli():
                 response = " ".join(res_text).capitalize() + "."
             else:
                 response = "..."
+
+        # Append to log file
+        try:
+            log_path = os.path.join(os.path.dirname(__file__), 'output.log')
+            with open(log_path, 'a', encoding='utf-8') as lf:
+                ts = datetime.datetime.utcnow().isoformat()
+                lf.write(f"{ts} | model={args.model} | prompt={args.text} | response={response}\n")
+        except Exception as e:
+            print(f"[-] Warning: could not write log: {e}")
 
         print(f"AI ({args.model}): {response}")
             
